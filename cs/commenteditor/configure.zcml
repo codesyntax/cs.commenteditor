@@ -16,7 +16,7 @@
         name="edit"
         for="plone.app.discussion.interfaces.IComment"
         class=".browser.EditForm"
-        permission="cmf.ManagePortal"
+        permission="plone.app.discussion.ReviewComments"
     />
 
 
