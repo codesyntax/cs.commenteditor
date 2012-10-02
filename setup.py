@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0'
+version = '1.0b2'
 
 setup(name='cs.commenteditor',
       version=version,
       description="A view to edit comments created with plone.app.discussion",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
@@ -14,10 +14,10 @@ setup(name='cs.commenteditor',
         "Framework :: Plone",
         "Programming Language :: Python",
         ],
-      keywords='',
-      author='',
-      author_email='',
-      url='http://svn.plone.org/svn/collective/',
+      keywords='discussion edit comments',
+      author='Mikel Larreategi',
+      author_email='mlarreategi@codesyntax.com',
+      url='http://github.com/codesyntax/cs.commenteditor',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['cs'],
