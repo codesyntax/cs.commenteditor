@@ -1,9 +1,16 @@
 Changelog
 =========
 
-1.1 (UNRELEASED)
--------------------
+1.1 (2015-01-13)
+----------------
 
+- add manifest [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- notify object modification [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- bump [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- Updating version on trunk after tagging [Mikel Larreategi <mlarreategi@codesyntax.com>]
 
 
 
