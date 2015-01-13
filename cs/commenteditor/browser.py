@@ -9,6 +9,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import form, field, button
 from zope.component import queryUtility
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class EditForm(extensible.ExtensibleForm, form.Form):
@@ -27,8 +29,9 @@ class EditForm(extensible.ExtensibleForm, form.Form):
                                          'in_reply_to',
                                          )
 
-    @button.buttonAndHandler(_(u"edit_comment_button", default=u"Edit Comment"),
-                             name='comment')
+    @button.buttonAndHandler(_(u"edit_comment_button",
+        default=u"Edit Comment"),
+        name='comment')
     def handleComment(self, action):
         # Validation form
         data, errors = self.extractData()
@@ -40,9 +43,10 @@ class EditForm(extensible.ExtensibleForm, form.Form):
         settings = registry.forInterface(IDiscussionSettings, check=False)
         portal_membership = getToolByName(self.context, 'portal_membership')
         if settings.captcha != 'disabled' and \
-        settings.anonymous_comments and \
-        portal_membership.isAnonymousUser():
-            if not 'captcha' in data:
+            settings.anonymous_comments and \
+                portal_membership.isAnonymousUser():
+
+            if 'captcha' not in data:
                 data['captcha'] = u""
             captcha = CaptchaValidator(self.context,
                                        self.request,
@@ -54,7 +58,10 @@ class EditForm(extensible.ExtensibleForm, form.Form):
         for k, v in data.items():
             setattr(self.context, k, v)
 
-        IStatusMessage(self.request).addStatusMessage(_(u'The message was edited successfuly'))
+        notify(ObjectModifiedEvent(self.context))
+
+        IStatusMessage(self.request).addStatusMessage(
+            _(u'The message was edited successfuly'))
         self.request.response.redirect(self.context.absolute_url())
 
     def updateWidgets(self):
