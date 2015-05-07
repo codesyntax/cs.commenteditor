@@ -11,6 +11,13 @@ from z3c.form import form, field, button
 from zope.component import queryUtility
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
+from Products.CMFPlone.utils import safe_unicode
+from types import StringType
+from types import UnicodeType
+
+
+def safe_encode(text):
+    return safe_unicode(text).encode('utf-8')
 
 
 class EditForm(extensible.ExtensibleForm, form.Form):
@@ -56,8 +63,10 @@ class EditForm(extensible.ExtensibleForm, form.Form):
             captcha.validate(data['captcha'])
 
         for k, v in data.items():
-            setattr(self.context, k, v)
-
+            if type(v) in [UnicodeType, StringType]:
+                setattr(self.context, k, safe_encode(v))
+            else:
+                setattr(self.context, k, v)
         notify(ObjectModifiedEvent(self.context))
 
         IStatusMessage(self.request).addStatusMessage(
